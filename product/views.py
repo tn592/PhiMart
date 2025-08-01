@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from product.models import Product, Category
+from product.serializers import ProductSerializer
 
 # from django.http import HttpResponse
 # from rest_framework import status
@@ -19,8 +20,8 @@ def view_specific_product(request, id):
     #         {"message": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND
     #     )
     product = get_object_or_404(Product, pk=id)
-    product_dict = {"id": product.id, "name": product.name, "price": product.price}
-    return Response(product_dict)
+    serializer = ProductSerializer(product)
+    return Response(serializer.data)
 
 
 @api_view()
