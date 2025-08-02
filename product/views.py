@@ -7,9 +7,6 @@ from product import serializers
 from product.models import Product, Category
 from product.serializers import CategorySerializer, ProductSerializer
 
-# from django.http import HttpResponse
-# from rest_framework import status
-
 
 # Create your views here.
 
@@ -18,9 +15,6 @@ from product.serializers import CategorySerializer, ProductSerializer
 def view_products(request):
     if request.method == "GET":
         products = Product.objects.select_related("category").all()
-        # serializer = ProductSerializer(
-        #     products, many=True, context={"request": request}
-        # )
         serializer = ProductSerializer(products, many=True)
         return Response(serializer.data)
     if request.method == "POST":
@@ -29,24 +23,10 @@ def view_products(request):
         print(serializer.validated_data)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # if serializer.is_valid():
-        #     print(serializer.validated_data)
-        #     serializer.save()
-        #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-        # else:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(["GET", "PUT", "DELETE"])
 def view_specific_product(request, id):
-    # try:
-    #     product = Product.objects.get(pk=id)
-    #     product_dict = {"id": product.id, "name": product.name, "price": product.price}
-    #     return Response(product_dict)
-    # except Product.DoesNotExist:
-    #     return Response(
-    #         {"message": "Product does not exist"}, status=status.HTTP_404_NOT_FOUND
-    #     )
     if request.method == "GET":
         product = get_object_or_404(Product, pk=id)
         serializer = ProductSerializer(product)
