@@ -29,7 +29,7 @@ class CustomUserAdmin(UserAdmin):
         ),
         ("Important Dates", {"fields": ("last_login", "date_joined")}),
     )
-    add_fieldset = (
+    add_fieldsets = (
         (
             None,
             {
