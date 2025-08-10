@@ -4,7 +4,6 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     DestroyModelMixin,
 )
-from order import serializers
 from order.models import Cart, CartItem, Order
 from order import serializers as orderSz
 from order.serializers import (
