@@ -14,6 +14,7 @@ from product.paginations import DefaultPagination
 from api.permissions import IsAdminOrReadOnly
 from product.permissions import IsReviewAuthorOrReadonly
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 # from rest_framework.permissions import IsAdminUser, AllowAny
 
@@ -38,7 +39,29 @@ class ProductViewSet(ModelViewSet):
     def get_queryset(self):
         return Product.objects.prefetch_related("images").all()
 
-    @swagger_auto_schema(operation_summary="Retrive a list of products")
+    @swagger_auto_schema(
+        operation_summary="Retrieve a list of products",
+        manual_parameters=[
+            openapi.Parameter(
+                "category_id",
+                openapi.IN_QUERY,
+                description="Filter by category id",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "price__gt",
+                openapi.IN_QUERY,
+                description="Minimum price",
+                type=openapi.TYPE_STRING,
+            ),
+            openapi.Parameter(
+                "price__lt",
+                openapi.IN_QUERY,
+                description="Maximum price",
+                type=openapi.TYPE_STRING,
+            ),
+        ],
+    )
     def list(self, request, *args, **kwargs):
         """
         Retrive all the products
