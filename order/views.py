@@ -75,13 +75,13 @@ class CartItemViewSet(ModelViewSet):
 class OrderViewset(ModelViewSet):
     http_method_names = ["get", "post", "delete", "patch", "head", "options"]
 
-    @action(detail=True, methods="post")
+    @action(detail=True, methods=["post"])
     def cancel(self, request, pk=None):
         order = self.get_object()
         OrderService.cancel_order(order=order, user=request.user)
         return Response({"status": "Order Canceled"})
 
-    @action(detail=True, methods=["patch"], permission_classes=["IsAdminUser"])
+    @action(detail=True, methods=["patch"], permission_classes=[IsAdminUser])
     def update_status(self, request, pk=None):
         order = self.get_object()
         serializer = orderSz.UpdateOrderSerializer(
