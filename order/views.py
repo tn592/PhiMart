@@ -4,7 +4,7 @@ from rest_framework.mixins import (
     RetrieveModelMixin,
     DestroyModelMixin,
 )
-from order.models import Cart, CartItem, Order
+from order.models import Cart, CartItem, Order, OrderItem
 from order import serializers as orderSz
 from order.serializers import (
     CartSerializer,
@@ -18,6 +18,7 @@ from rest_framework.decorators import action
 from order.services import OrderService
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.views import APIView
 
 # Create your views here.
 
@@ -118,3 +119,13 @@ class OrderViewset(ModelViewSet):
         return Order.objects.prefetch_related("items__product").filter(
             user=self.request.user
         )
+
+
+class HasOrderedProduct(APIView): 
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, product_id): 
+        user = request.user
+        has_ordered = OrderItem.objects.filter(
+            order__user=user, product_id=product_id).exists()
+        return Response({"hasOrdered": has_ordered})
