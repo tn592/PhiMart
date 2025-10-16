@@ -93,7 +93,10 @@ INTERNAL_IPS = [
 
 WSGI_APPLICATION = "phi_mart.wsgi.app"
 
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://phimart-client-chi.vercel.app",
+]
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
